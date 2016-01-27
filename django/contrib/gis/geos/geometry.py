@@ -72,7 +72,19 @@ class GEOSGeometry(GEOSBase, ListMixin):
             g = geo_input
         elif isinstance(geo_input, six.memoryview):
             # When the input is a buffer (WKB).
-            g = wkb_r().read(geo_input)
+            try:
+                g = wkb_r().read(geo_input)
+            except:
+                print("wrong format")
+                # TODO: remove the stub of postgis 2.2
+                b = []
+                for x in geo_input:
+                    b.append(int.from_bytes(x, "little"))
+                print(bytes(b))
+                b[1] -= 0xe8
+                b[2:5] = [0, 0, 128]
+                print(bytes(b))
+                g = wkb_r().read(memoryview(bytes(b)))
         elif isinstance(geo_input, GEOSGeometry):
             g = capi.geom_clone(geo_input.ptr)
         else:
