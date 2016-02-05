@@ -75,7 +75,6 @@ class GEOSGeometry(GEOSBase, ListMixin):
             try:
                 g = wkb_r().read(geo_input)
             except:
-                print("wrong format")
                 # TODO: remove the stub of postgis 2.2
                 b = []
                 for x in geo_input:
