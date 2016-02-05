@@ -80,10 +80,8 @@ class GEOSGeometry(GEOSBase, ListMixin):
                 b = []
                 for x in geo_input:
                     b.append(int.from_bytes(x, "little"))
-                print(bytes(b))
                 b[1] -= 0xe8
                 b[2:5] = [0, 0, 128]
-                print(bytes(b))
                 g = wkb_r().read(memoryview(bytes(b)))
         elif isinstance(geo_input, GEOSGeometry):
             g = capi.geom_clone(geo_input.ptr)
